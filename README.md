@@ -14,7 +14,7 @@ collected on April 5, 2021, 12:00-16:30. The location of all of the trash and
 recycle bins from which we extracted is on the main Plaza on Duke University's
 West Campus.
 
-- `can_number`:
+- `can_number`: unique identifying label (number) to distinguish between bins
 - `pieces_trash`: number of pieces in a bin resorted as landfill
 - `pieces_recycle`: number of pieces in a bin resorted as recyclable
 - `pieces_compost`: number of pieces in a bin resorted as compostable
@@ -62,7 +62,7 @@ proved invaluable to creating this opportunity for Duke Student Government to
 investigate waste practices and knowledge on campus. She gave us the "yes" that
 we needed.
 
-Thank you to our volunteers: **Leah Roffman**, **Gurnoor Majhail**, **Hana
+Thank you to our volunteers: **Leah Roffman**, **Gurnoor Majhail**, **Hana**
 **Hendi**, **Rishab Jagetia**, **Dawei Gao**, **Sawyer O'Keefe**, **Aashna**
 **Sawhney**, **Andrew McCallum**, **Adam Kosinski**, **Arianna Dwomoh**,
 **Rosa Golchin**, **Shirley Mathur**, and **Julia Murphy**. These extraordinary
