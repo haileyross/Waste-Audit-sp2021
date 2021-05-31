@@ -24,6 +24,13 @@ library(rvest)
 library(httr)
 ```
 
+```{r upload-and-clean-data}
+# write.csv(WasteAuditDataSheet, "waste_audit_datasheet.csv")
+waste_audit <- WasteAuditDataSheet %>% 
+  select(-c(X26)) %>% 
+  slice(1:22)
+```
+
 # Introduction
 
 
