@@ -1,2 +1,27 @@
-Rmd start
-does this work?
+---
+title: "Spring 2021 Waste Audit"
+author: "Hailey Ross, Shreya Joshi, Danny Wu, Chaya Brennan Agarwal"
+subtitle: Duke Student Government Services and Sustainability Committee
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, echo = FALSE}
+knitr::opts_chunk$set(echo = FALSE, comment = NA, 
+                      message = FALSE, warning = FALSE,
+                      fig.height = 6, fig.width = 9, fig.align = "center")
+```
+
+```{r packages}
+library(tidyverse)
+library(infer)
+library(car)
+library(stringr)
+library(robotstxt)
+library(rvest)
+library(httr)
+```
+
+# Introduction
