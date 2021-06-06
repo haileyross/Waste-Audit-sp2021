@@ -32,19 +32,94 @@ waste_audit <- read.csv(file = 'waste_audit_datasheet.csv') %>%
 
 # Introduction
 
+goal:
+- judge importance of waste education on campus
+- identify ways that we could educate students on waste more successfully
+- identify ways that the university could improve waste practices
+- quantify the amount of compost produced
+- calculate how much composting could be diverted from landfills
+- judge the value of the waste audit; should it be recreated?
+- how did COVID impact waste on campus? how did COVID impact waste numbers on campus?
 
+- percent of students living on campus
+- how many students living on campus; can we make an estimate as to how much waste the average meal produces?
+- global trash statistics
+- sustainable dining goals in implementing compostables during COVID
+- composting surveys
+- this comes at a time after (or right before???) the university placed composting awareness posters on the doors of WU
 
 # Methodology
 
+## Content Comparisons
+- average weight of a piece of trash, composting, and recycling item
+```{r average-piece-weight}
+waste_audit %>% 
+  summarize(total_trash_pieces = sum(pieces_trash),
+            total_recycle_pieces = sum(pieces_recycle),
+            total_compost_pieces = sum(pieces_compost),
+            total_trash_weight = sum(weight_trash), 
+            total_recycle_weight = sum(weight_recycle),
+            total_compost_weight = sum(weight_compost)) %>% 
+  summarize(average_trash_weight = total_trash_weight / total_trash_pieces,
+            average_recycle_weight = total_recycle_weight / total_recycle_pieces,
+            average_compost_weight = total_compost_weight / total_compost_pieces)
+```
 
+- comparative starting volume of pieces/weight between trash and recycle streams
+    bar graphs
+```{r starting-volumes}
+waste_audit %>% 
+  mutate(original_weight = weight_trash + weight_recycle + weight_compost,
+         original_pieces = pieces_trash + pieces_recycle + pieces_compost) %>% 
+  group_by(original_stream) %>% 
+  summarize(avg_starting_weight = mean(original_weight),
+            avg_starting_pieces = mean(original_pieces)) %>% 
+  ggplot(data = waste_audit) +
+  geom_bar()
+  
+```
+in the middle of relearning ggplot^ oops
+
+## Quantifying Missorted Waste
+- percent of trash that is missorted
+    pie chart, value, bar chart
+- percent of recycling that is missorted
+    pie chart, value, bar chart
+
+## Campus Compost
+- percent of trash and recycling that could be compost
+    value, pie chart, bar graphs (each bar split into three sections)
+- volume of compostables
+    bar graph, value
+
+## Differences in Location
+-difference between big belly compactors and blue bins (is this because multiple streams are offered through Big Belly Compactors?)
+    bar graphs, box plots
+-location of the can
+    spatial data
+
+## Sample Size and Confidence
+-sample size; can this waste audit's data conclusively say anything about campus, or can it merely be used to suggest the need for a more extensive audit?
+    confidence intervals?
 
 # Results
 
+## Content Comparisons
 
+## Quantifying Missorted Waste
+
+## Campus Compost
+
+## Differences in Location
+
+## Sample Size and Confidence
 
 # Discussion
 
-
+- error: human error in sorting
+- error: some contamination spreads (e.g. containers filled with liquid)
+- discuss time of day and year that the data was collected
+- note: this does not account for all waste; waste disposed of in dorms, WU conveyor belt, BC, library, quad trash bins, gym (Red Mango), East Campus (Marketplace, dorms)
 
 # Call to Action
 
