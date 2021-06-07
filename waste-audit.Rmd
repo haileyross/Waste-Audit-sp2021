@@ -22,6 +22,7 @@ library(stringr)
 library(robotstxt)
 library(rvest)
 library(httr)
+library(tinytex)
 ```
 
 ```{r upload-and-clean-data}
@@ -75,28 +76,6 @@ waste_audit %>%
             avg_starting_pieces = mean(original_pieces))
 ```
 
-```{r bar-plot-original-stream-percent}
-makeup <- waste_audit %>% 
-  group_by(original_stream) %>% 
-  summarize(average_trash = mean(prop_pieces_trash),
-            average_recycle = mean(prop_pieces_recycle),
-            average_compost = mean(prop_pieces_compost)) %>% 
-  select(average_trash, average_recycle, average_compost)
-
-makeup <- as.matrix(makeup)
-
-colnames(makeup) <- c("trash", "recycle", "compost")
-
-rownames(makeup) <- c("Recycle", "Trash")
-
-color <- c("black", "#3265ab", "#2ca816")
-
-barplot(t(makeup), beside = FALSE, col = color, ylim = c(0, 1.1),
-        main = "Missorted Waste", xlab = "Original Stream Designation", ylab = "Percent")
-legend("topleft", colnames(makeup), pch = 15, col = color, horiz = T, bty = "n")
-```
-source: https://stackoverflow.com/questions/61506408/grouped-barchart-in-r-with-4-variables
-
 ```{r bar-plot-original-stream-piece-comparison}
 data <- waste_audit %>% 
   group_by(original_stream) %>% 
@@ -118,11 +97,80 @@ barplot(t(data), beside = FALSE, col = color, ylim = c(0, 2500),
   legend("topleft", colnames(data), pch = 15, col = color, horiz = T, bty = "n")
 ```
 
+source: https://stackoverflow.com/questions/61506408/grouped-barchart-in-r-with-4-variables
+
 ## Quantifying Missorted Waste
+
+```{r bar-plot-original-stream-percent}
+makeup <- waste_audit %>% 
+  group_by(original_stream) %>% 
+  summarize(average_trash = mean(prop_pieces_trash),
+            average_recycle = mean(prop_pieces_recycle),
+            average_compost = mean(prop_pieces_compost)) %>% 
+  select(average_trash, average_recycle, average_compost)
+
+makeup <- as.matrix(makeup)
+
+colnames(makeup) <- c("trash", "recycle", "compost")
+
+rownames(makeup) <- c("Recycle", "Trash")
+
+color <- c("black", "#3265ab", "#2ca816")
+
+barplot(t(makeup), beside = FALSE, col = color, ylim = c(0, 1.1),
+        main = "Missorted Waste", xlab = "Original Stream Designation", ylab = "Percent")
+legend("topleft", colnames(makeup), pch = 15, col = color, horiz = T, bty = "n")
+```
+
 - percent of trash that is missorted
-    pie chart, value, bar chart
+    
+```{r missorted-trash}
+pie_trash <- waste_audit %>% 
+  mutate(missorted = pieces_recycle + pieces_compost) %>% 
+  group_by(original_stream) %>% 
+  summarize(sorted = sum(pieces_trash),
+            missorted = sum(missorted)) %>% 
+  slice(2)
+pie_trash
+
+slices <- c(555, 1639)
+lbls <- c("sorted", "missorted")
+
+percent <- slices / sum(slices) * 100
+
+percent
+
+pct <- round(percent)
+lbls <- paste(lbls, pct)
+lbls <-paste(lbls, "%", sep = " ")
+pie(slices, labels = lbls, col = c("#2ca816", "#cc2900"), main = "Missorted Trash")
+```
+
+source: https://www.statmethods.net/graphs/pie.html
+
 - percent of recycling that is missorted
-    pie chart, value, bar chart
+    
+```{r missorted-recycle}
+pie_recycle <- waste_audit %>% 
+  mutate(missorted = pieces_trash + pieces_compost) %>% 
+  group_by(original_stream) %>% 
+  summarize(sorted = sum(pieces_recycle),
+            missorted = sum(missorted)) %>% 
+  slice(1)
+pie_recycle
+
+slices <- c(174, 489)
+lbls <- c("sorted", "missorted")
+
+percent <- slices / sum(slices) * 100
+
+percent
+
+pct <- round(percent)
+lbls <- paste(lbls, pct)
+lbls <-paste(lbls, "%", sep = " ")
+pie(slices, labels = lbls, col = c("#2ca816", "#cc2900"), main = "Missorted Recycle")
+```
 
 ## Campus Compost
 - percent of trash and recycling that could be compost
