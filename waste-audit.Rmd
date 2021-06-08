@@ -23,6 +23,7 @@ library(robotstxt)
 library(rvest)
 library(httr)
 library(tinytex)
+library(sf)
 ```
 
 ```{r upload-and-clean-data}
@@ -32,6 +33,8 @@ waste_audit <- read.csv(file = 'waste_audit_datasheet.csv') %>%
 ```
 
 # Introduction
+
+hypothesis
 
 goal:
 
@@ -246,16 +249,32 @@ barplot(t(volume_bar), beside = TRUE, col = color, ylim = c(0, 100),
 legend("topleft", colnames(volume_bar), pch = 15, col = color, horiz = T, bty = "n")
 ```
 
-
 ## Differences in Location
 -difference between big belly compactors and blue bins (is this because multiple streams are offered through Big Belly Compactors?)
     bar graphs, box plots
 -location of the can
-    spatial data (notes 7)
+    spatial data (https://geocompr.robinlovelace.net/spatial-class.html)
 
 ## Sample Size and Confidence
--sample size; can this waste audit's data conclusively say anything about campus, or can it merely be used to suggest the need for a more extensive audit?
+bootstrap sample
+bootstrap distribution
+
+null hypothesis and alternative hypothesis
+- sample size; can this waste audits data conclusively say anything about campus, or can it merely be used to suggest the need for a more extensive audit? is the sample size representative?
     confidence intervals?
+    p-value (notes 15)
+    
+```{r}
+set.seed(405)
+```
+
+$$\hat{p} = 0.5$$
+$$z^* = 1.96$$
+We will use the following margin of error expression to calculate the margin of
+error:
+$$\pm z^* \times \sqrt{\frac{\hat{p}(1-\hat{p})}{n}} = MOE$$
+$$1.96 \times \sqrt{\frac{0.5(1-0.5)}{22}} \le 0.208937$$
+Margin of Error (MOE): 0.208937 or 20.8937%
 
 # Results
 
@@ -275,6 +294,7 @@ legend("topleft", colnames(volume_bar), pch = 15, col = color, horiz = T, bty = 
 - error: some contamination spreads (e.g. containers filled with liquid)
 - discuss time of day and year that the data was collected
 - note: this does not account for all waste; waste disposed of in dorms, WU conveyor belt, BC, library, quad trash bins, gym (Red Mango), East Campus (Marketplace, dorms)
+- semi-random sampling (all recycling bins chosen, which dictated our choices in picking from the trash bins)
 
 # Call to Action
 
