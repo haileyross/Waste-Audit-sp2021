@@ -1,6 +1,6 @@
 ---
 title: "Spring 2021 Waste Audit"
-author: "Hailey Ross, Shreya Joshi, Danny Wu, Chaya Brennan Agarwal"
+author: ""
 subtitle: Duke Student Government Services and Sustainability Committee
 output:
   pdf_document: default
@@ -29,7 +29,14 @@ library(sf)
 ```{r upload-and-clean-data}
 waste_audit <- read.csv(file = 'waste_audit_datasheet.csv') %>% 
   select(-c(X, X26)) %>% 
-  slice(1:22)
+  slice(1:22) %>% 
+  select(-prop_pieces_trash, -prop_pieces_recycle, -prop_pieces_compost, -prop_trash_weight, -prop_recycle_weight, -prop_compost_weight) %>% 
+  mutate(prop_pieces_trash = pieces_trash / total_piece_volume,
+         prop_pieces_recycle = pieces_recycle / total_piece_volume,
+         prop_pieces_compost = pieces_compost / total_piece_volume,
+         prop_trash_weight = weight_trash / total_can_weight,
+         prop_recycle_weight = weight_recycle / total_can_weight,
+         prop_compost_weight = weight_compost / total_can_weight)
 ```
 
 # Introduction
@@ -104,6 +111,11 @@ barplot(t(data), beside = FALSE, col = color, ylim = c(0, 2500),
 source: https://stackoverflow.com/questions/61506408/grouped-barchart-in-r-with-4-variables
 
 ## Quantifying Missorted Waste
+
+```{r missorted}
+waste_audit <- waste_audit %>% 
+  mutate(perc_missorted = case_when(original_stream == "Trash" ~ (pieces_recycle + pieces_compost) / total_piece_volume, original_stream == "Recycling" ~ (pieces_trash + pieces_compost) / total_piece_volume))
+```
 
 ```{r bar-plot-original-stream-percent}
 makeup <- waste_audit %>% 
@@ -251,23 +263,61 @@ legend("topleft", colnames(volume_bar), pch = 15, col = color, horiz = T, bty = 
 
 ## Differences in Location
 -difference between big belly compactors and blue bins (is this because multiple streams are offered through Big Belly Compactors?)
-    bar graphs, box plots
--location of the can
-    spatial data (https://geocompr.robinlovelace.net/spatial-class.html)
+ cannot be determined with high enough confidence; sample size of blue single sream trash bins has a margin of error of 49% at 95% confidence
+ 
+-location of the can - use simple features (sf) multi-point data and coordinates in dataset; how do I do this?
+    spatial data - how to do a writeup on this type of spatial data, especially when out of immediate visual context of what these coordinates mean on campus and in relation to the location of the cans
 
-## Sample Size and Confidence
-bootstrap sample
-bootstrap distribution
+```{r, eval = FALSE}
+coords <- waste_audit %>% 
+  select(x_coordinate, y_coordinate) %>% 
+  mutate(x_coordinate = as.numeric(x_coordinate),
+         y_coordinate = as.numeric(y_coordinate))
 
-null hypothesis and alternative hypothesis
-- sample size; can this waste audits data conclusively say anything about campus, or can it merely be used to suggest the need for a more extensive audit? is the sample size representative?
-    confidence intervals?
-    p-value (notes 15)
-    
-```{r}
-set.seed(405)
+multipoint_matrix <- list(rbind(coords, 'x_coordinate', 'y_coordinate'))
+
+st_multipoint(multipoint_matrix, dim = "XY")
+
+#code source: https://geocompr.robinlovelace.net/spatial-class.html but is now butchered
 ```
 
+- can compare near exit maybe? looks like the rest of the qualitative samples are too small to compare
+
+## Sample Size and Confidence
+
+null hypothesis and alternative hypothesis
+
+bootstrap sample
+
+```{r bootstrap-sample}
+set.seed(405)
+
+boot_missorted <- waste_audit %>% 
+  specify(response = perc_missorted) %>% 
+  generate(reps = 10000, type = "bootstrap") %>% 
+  calculate(stat = "mean")
+```
+
+confidence interval
+
+```{r confidence-interval}
+ci_boot_missorted <- get_ci(boot_missorted, level = 0.99)
+ci_boot_missorted
+```
+
+bootstrap distribution
+
+```{r bootstrap-vis}
+visualize(boot_missorted) +
+  shade_ci(ci_boot_missorted) +
+  labs(title = "Simulated Bootstrap Distribution", x = "Sample Mean", y = "Count")
+```
+
+p-value (notes 15)
+
+sample size: can this waste audits data conclusively say anything about campus, or can it merely be used to suggest the need for a more extensive audit? is the sample size representative?
+
+confidence level 95% corresponds to z = 1.96
 $$\hat{p} = 0.5$$
 $$z^* = 1.96$$
 We will use the following margin of error expression to calculate the margin of
@@ -275,6 +325,9 @@ error:
 $$\pm z^* \times \sqrt{\frac{\hat{p}(1-\hat{p})}{n}} = MOE$$
 $$1.96 \times \sqrt{\frac{0.5(1-0.5)}{22}} \le 0.208937$$
 Margin of Error (MOE): 0.208937 or 20.8937%
+this represents the amount of random sampling error in a study; bigger indicates little confidence in generalizability of data
+
+How does this impact what our values mean? Can this percentage be applied to create a new range of results from the audit?
 
 # Results
 
@@ -294,7 +347,8 @@ Margin of Error (MOE): 0.208937 or 20.8937%
 - error: some contamination spreads (e.g. containers filled with liquid)
 - discuss time of day and year that the data was collected
 - note: this does not account for all waste; waste disposed of in dorms, WU conveyor belt, BC, library, quad trash bins, gym (Red Mango), East Campus (Marketplace, dorms)
-- semi-random sampling (all recycling bins chosen, which dictated our choices in picking from the trash bins)
+- semi-random sampling (all recycling bins chosen, which dictated our choices in picking from the trash bins
+- error: subjectivity in what it means to be proximal to an exit door, stairwell mouth, etc.
 
 # Call to Action
 
