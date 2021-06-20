@@ -60,6 +60,11 @@ goal:
 - composting surveys
 - this comes at a time after (or right before???) the university placed composting awareness posters on the doors of WU
 
+action items:
+
+- call a local composting company (or the composting company of a university of similar size) and ascertain how much compost they collect
+- contact the administrators of the tray collector resource in WU to see if any data has been collected incrementally or since the implementation of this infrastructure
+
 # Methodology
 
 ## Content Comparisons
