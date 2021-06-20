@@ -72,6 +72,10 @@ waste infrastructure on campus and true grit. Not only did we accomplish
 something on April 5, but this group of students was able to enjoy themselves
 and make light of a very dirty day. We couldn't have done it without you.
 
+Thank you to Professor Shawn Santo and Rob Kravek for assisting in the
+statistical analysis and the betterment of our data gathering technique. We
+quite literally couldn't have done it without you.
+
 We are grateful to **Pilar Kelly** who both volunteered and authored an article
 featuring the waste audit in the Duke Chronicle: https://www.dukechronicle.com/article/2021/04/duke-university-waste-audit-compost.
 Thank you for capturing the process eloquently and for helping us spread the
