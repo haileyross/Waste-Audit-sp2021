@@ -72,7 +72,7 @@ waste infrastructure on campus and true grit. Not only did we accomplish
 something on April 5, but this group of students was able to enjoy themselves
 and make light of a very dirty day. We couldn't have done it without you.
 
-Thank you to Professor Shawn Santo and Rob Kravek for assisting in the
+Thank you to Professor Shawn Santo and Rob Kravec for assisting in the
 statistical analysis and the betterment of our data gathering technique. We
 quite literally couldn't have done it without you.
 
