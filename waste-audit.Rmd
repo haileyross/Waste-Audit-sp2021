@@ -341,7 +341,7 @@ null hypothesis and alternative hypothesis
 
 bootstrap sample
 
-```{r bootstrap-sample}
+```{r bootstrap-sample-without-compost}
 set.seed(405)
 
 boot_missorted <- waste_audit %>% 
@@ -352,14 +352,14 @@ boot_missorted <- waste_audit %>%
 
 confidence interval
 
-```{r confidence-interval}
+```{r confidence-interval-without-compost}
 ci_boot_missorted <- get_ci(boot_missorted, level = 0.95)
 ci_boot_missorted
 ```
 
 bootstrap distribution
 
-```{r bootstrap-vis}
+```{r bootstrap-vis-without-compost}
 visualize(boot_missorted) +
   shade_ci(ci_boot_missorted) +
   labs(title = "Simulated Bootstrap Distribution", x = "Sample Mean", y = "Count")
@@ -369,7 +369,7 @@ $\bar{x} \pm t^*\frac{s}{\sqrt{n}}$
 
 more conservative than normal distribution; weight on tail ends
 
-```{r t-distribution, eval = FALSE}
+```{r t-distribution-without-compost, eval = FALSE}
 mean(waste_audit$perc_missorted) + c(-1, 1) * 2.05 * sd(waste_audit$perc_missorted) / sqrt(22)
 ```
 
@@ -381,7 +381,7 @@ null hypothesis and alternative hypothesis
 
 bootstrap sample
 
-```{r bootstrap-sample}
+```{r bootstrap-sample-with-compost}
 set.seed(405)
 
 boot_missorted <- waste_audit %>% 
@@ -392,14 +392,14 @@ boot_missorted <- waste_audit %>%
 
 confidence interval
 
-```{r confidence-interval}
+```{r confidence-interval-with-compost}
 ci_boot_missorted <- get_ci(boot_missorted, level = 0.95)
 ci_boot_missorted
 ```
 
 bootstrap distribution
 
-```{r bootstrap-vis}
+```{r bootstrap-vis-with-compost}
 visualize(boot_missorted) +
   shade_ci(ci_boot_missorted) +
   labs(title = "Simulated Bootstrap Distribution", x = "Sample Mean", y = "Count")
@@ -409,7 +409,7 @@ $\bar{x} \pm t^*\frac{s}{\sqrt{n}}$
 
 more conservative than normal distribution; weight on tail ends
 
-```{r t-distribution, eval = FALSE}
+```{r t-distribution-with-compost, eval = FALSE}
 mean(waste_audit$perc_missorted_c) + c(-1, 1) * 2.05 * sd(waste_audit$perc_missorted_c) / sqrt(22)
 ```
 
