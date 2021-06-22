@@ -3,9 +3,9 @@ title: "Spring 2021 Waste Audit"
 author: ""
 subtitle: Duke Student Government Services and Sustainability Committee
 output:
-  pdf_document: default
   html_document:
     df_print: paged
+  pdf_document: default
 ---
 
 ```{r setup, echo = FALSE}
@@ -119,7 +119,8 @@ barplot(t(data), beside = FALSE, col = color, ylim = c(0, 2500),
 
 ```{r missorted}
 waste_audit <- waste_audit %>% 
-  mutate(perc_missorted = case_when(original_stream == "Trash" ~ (pieces_recycle + pieces_compost) / total_piece_volume, original_stream == "Recycling" ~ (pieces_trash + pieces_compost) / total_piece_volume))
+  mutate(perc_missorted_c = case_when(original_stream == "Trash" ~ (pieces_recycle + pieces_compost) / total_piece_volume, original_stream == "Recycling" ~ (pieces_trash + pieces_compost) / total_piece_volume),
+         perc_missorted = case_when(original_stream == "Trash" ~ pieces_recycle / (pieces_trash + pieces_recycle), original_stream == "Recycling" ~ pieces_trash / (pieces_trash + pieces_recycle)))
 ```
 
 ```{r bar-plot-original-stream-percent}
@@ -334,6 +335,8 @@ st_multipoint(multipoint_matrix, dim = "XY")
 
 ## Sample Size and Confidence
 
+# Bootstrap Sample that does not include composting in the total piece volume to determine contamination rates of just trash and recycle (excluding the option to compost)
+
 null hypothesis and alternative hypothesis
 
 bootstrap sample
@@ -367,10 +370,50 @@ $\bar{x} \pm t^*\frac{s}{\sqrt{n}}$
 more conservative than normal distribution; weight on tail ends
 
 ```{r t-distribution, eval = FALSE}
-mean(missorted$perc_missorted) + c(-1, 1) * 2.05 * sd(missorted$perc_missorted) / sqrt(22)
+mean(waste_audit$perc_missorted) + c(-1, 1) * 2.05 * sd(waste_audit$perc_missorted) / sqrt(22)
 ```
 
-tdist: 0.7151182, 0.7912454
+tdist: 0.4044905, 0.5056520
+
+# Bootstrap Sample that DOES include composting in the total piece volume to determine holistic contamination rates
+
+null hypothesis and alternative hypothesis
+
+bootstrap sample
+
+```{r bootstrap-sample}
+set.seed(405)
+
+boot_missorted <- waste_audit %>% 
+  specify(response = perc_missorted_c) %>% 
+  generate(reps = 10000, type = "bootstrap") %>% 
+  calculate(stat = "mean")
+```
+
+confidence interval
+
+```{r confidence-interval}
+ci_boot_missorted <- get_ci(boot_missorted, level = 0.95)
+ci_boot_missorted
+```
+
+bootstrap distribution
+
+```{r bootstrap-vis}
+visualize(boot_missorted) +
+  shade_ci(ci_boot_missorted) +
+  labs(title = "Simulated Bootstrap Distribution", x = "Sample Mean", y = "Count")
+```
+
+$\bar{x} \pm t^*\frac{s}{\sqrt{n}}$
+
+more conservative than normal distribution; weight on tail ends
+
+```{r t-distribution, eval = FALSE}
+mean(waste_audit$perc_missorted_c) + c(-1, 1) * 2.05 * sd(waste_audit$perc_missorted_c) / sqrt(22)
+```
+
+tdist: 0.7146358, 0.7902705
 
 # Results
 
