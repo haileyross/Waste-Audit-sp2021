@@ -4,7 +4,15 @@
 
 ## Abstract
 
-
+The results of the Spring 2021 Waste Audit revealed a large proportion of
+missorted waste in both recycling and landfill bins. These results indicate
+that students are unable to properly sort their waste due to a lack of
+information. It is necessary to provide students with an educational campaign
+concentrating on how to sort recycling and trash, as well as compost. Over
+half of the waste in recycling and trash bins was compostable; this large
+volume of compost demonstrates that students need more widespread access
+to composting following the success of additional education. We encourage
+annual waste audits to monitor progress and ascertain success.
 
 ## Codebook for Relevant Variables
 
@@ -40,12 +48,9 @@ West Campus.
 - `y_coordinate`: approximate y-coorindate of bin location
 - `collection time`: time samples were collected
 
-## Author Information
+## Authors
 
-**Hailey Ross.** Duke Public Policy A.B. '23. Student Senator on Duke Student
-Government's Services and Sustainability Committee and the Presidential
-Committee of Facilities and the Environment. Interested in sustainability,
-waste, economics, and the intersection thereof.
+**Hailey Ross.**
 
 **Shreya Joshi.**
 
@@ -70,16 +75,10 @@ students volunteered their time on a Monday to sort through trash and
 recyclables -- a task that demonstrates an unrelenting dedication to improving
 waste infrastructure on campus and true grit. Not only did we accomplish
 something on April 5, but this group of students was able to enjoy themselves
-and make light of a very dirty day. We couldn't have done it without you.
+and make light of a very dirty day.
 
 Thank you to Professor Shawn Santo and Rob Kravec for assisting in the
-statistical analysis and the betterment of our data gathering technique. We
-quite literally couldn't have done it without you.
-
-We are grateful to **Pilar Kelly** who both volunteered and authored an article
-featuring the waste audit in the Duke Chronicle: https://www.dukechronicle.com/article/2021/04/duke-university-waste-audit-compost.
-Thank you for capturing the process eloquently and for helping us spread the
-word about our event and analysis.
+statistical analysis and the betterment of our data gathering technique.
 
 Thank you to Duke Student Government for supporting us along the way. Vice
 President of DSG's Services and Sustainability Committee **Zac Johnson** gave us
@@ -87,9 +86,6 @@ enthusiastic encouragement and helped guide and fine-tune our communication with
 administration. DSG President **Tommy Hessel** and Treasurer **William Xie**
 gave us their time and a platform to obtain additional funding from the DSG
 Discretionary Fund.
-
-Thank you Duke University for your dedication to waste infrastructure
-improvement and transparency.
 
 Thank you Duke Students for your interest in our project and results. We love
 you.
