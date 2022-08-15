@@ -123,7 +123,7 @@ $\bar{x} \pm t^*\frac{s}{\sqrt{n}}$
 more conservative than normal distribution; weight on tail ends
 
 ```{r t-distribution-with-compost, eval = FALSE}
-mean(waste_audit$perc_missorted_c) + c(-1, 1) * 2.05 * sd(waste_audit$perc_missorted_c) / sqrt(33)
+mean(waste_audit$perc_missorted_c) + c(-1, 1) * 2.05 * sd(waste_audit$perc_missorted_c) / sqrt(22)
 ```
 
-tdist: 0.4661198, 0.6653382
+tdist: 0.6798681, 0.8236861
